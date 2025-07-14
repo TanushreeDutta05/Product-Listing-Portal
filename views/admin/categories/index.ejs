@@ -1,0 +1,50 @@
+<%- include('../../partials/header') %>
+
+<div class="mb-4 d-flex justify-content-between align-items-center">
+  <h3 class="fw-bold"> Category List</h3>
+  <a href="/admin/categories/new" class="btn btn-success">Add Category</a>
+</div>
+
+<% if (success_msg && success_msg.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= success_msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (error_msg && error_msg.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= error_msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+
+<!-- Category Table -->
+<div class="table-responsive shadow-sm rounded-4">
+  <table class="table table-striped text-center align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Slug</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% categories.forEach(cat => { %>
+        <tr>
+          <td class="fw-semibold"><%= cat.name %></td>
+          <td><%= cat.slug %></td>
+          <td>
+            <a href="/admin/categories/edit/<%= cat._id %>" class="btn btn-sm btn-outline-warning me-1">Edit</a>
+            <form action="/admin/categories/delete/<%= cat._id %>?_method=DELETE" method="POST" style="display:inline-block;">
+              <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../../partials/footer') %>

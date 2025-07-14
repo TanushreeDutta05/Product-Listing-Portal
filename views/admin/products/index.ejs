@@ -1,0 +1,56 @@
+<%- include('../../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold">Product List</h3>
+  <a href="/admin/products/new" class="btn btn-success"> Add Product</a>
+</div>
+
+<% if (success_msg && success_msg.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= success_msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (error_msg && error_msg.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= error_msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<div class="table-responsive shadow-sm rounded-4">
+  <table class="table table-striped align-middle text-center">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Category</th>
+        <th scope="col">Image</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(prod => { %>
+        <tr>
+          <td class="fw-semibold"><%= prod.name %></td>
+          <td><%= prod.category.name %></td>
+          <td>
+            <% if (prod.image) { %>
+              <img src="/uploads/products/<%= prod.image %>" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+            <% } else { %>
+              <span class="text-muted">No Image</span>
+            <% } %>
+          </td>
+          <td>
+            <a href="/admin/products/edit/<%= prod._id %>" class="btn btn-sm btn-outline-warning me-1">Edit</a>
+            <form action="/admin/products/delete/<%= prod._id %>?_method=DELETE" method="POST" style="display:inline-block;">
+              <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../../partials/footer') %>
